@@ -32,13 +32,11 @@ header h1 {
 
 
 nav {
-
     background-color: white;
-
-    padding: 15px;
-
-    text-align: center;
-
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 16px;
 }
 
 
@@ -157,6 +155,14 @@ button {
 
 }
 
+.container-servicos {
+    display: flex;
+}
+
+.container-servicos {
+    display: flex;
+    gap: 20px;
+}
 
 footer {
 
