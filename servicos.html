@@ -40,48 +40,96 @@
 
     <section>
 
-    <h2>Serviços disponíveis</h2>
+        <h2>Serviços disponíveis</h2>
 
-    <p>
-        Veja alguns dos serviços oferecidos.
-    </p>
+        <p>
+            Veja alguns dos serviços oferecidos.
+        </p>
 
-    <div class="container-servicos">
 
-        <article>
-            <h3>Formatação de computadores</h3>
+        <div class="container-servicos">
 
-            <p>
-                Serviço de formatação e instalação do sistema operacional.
-            </p>
+            <article>
 
-            <a href="contato.html">Solicitar serviço</a>
-        </article>
+                <h3>Formatação de computadores</h3>
 
-        <article>
-            <h3>Manutenção de computadores</h3>
+                <p>
+                    Serviço de formatação e instalação do sistema operacional.
+                </p>
 
-            <p>
-                Análise e manutenção de computadores e notebooks
-                com problemas.
-            </p>
+                <a href="contato.html">Solicitar serviço</a>
 
-            <a href="contato.html">Solicitar serviço</a>
-        </article>
+            </article>
 
-        <article>
-            <h3>Instalação de programas</h3>
 
-            <p>
-                Instalação e configuração de programas para o usuário.
-            </p>
+            <article>
 
-            <a href="contato.html">Solicitar serviço</a>
-        </article>
+                <h3>Manutenção de computadores</h3>
 
-    </div>
+                <p>
+                    Análise e manutenção de computadores e notebooks
+                    com problemas.
+                </p>
 
-</section>
+                <a href="contato.html">Solicitar serviço</a>
+
+            </article>
+
+
+            <article>
+
+                <h3>Instalação de programas</h3>
+
+                <p>
+                    Instalação e configuração de programas para o usuário.
+                </p>
+
+                <a href="contato.html">Solicitar serviço</a>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <section class="consulta-servico">
+
+        <h2>Consulte um serviço</h2>
+
+        <label for="servico">
+            Escolha um serviço:
+        </label>
+
+        <select id="servico">
+
+            <option value="">
+                Selecione...
+            </option>
+
+            <option value="formatacao">
+                Formatação de computadores
+            </option>
+
+            <option value="manutencao">
+                Manutenção de computadores
+            </option>
+
+            <option value="programas">
+                Instalação de programas
+            </option>
+
+        </select>
+
+
+        <button id="btnConsultar" type="button">
+            Consultar orientação
+        </button>
+
+
+        <p id="resultado" aria-live="polite"></p>
+
+    </section>
 
 </main>
 
@@ -97,7 +145,7 @@
     </p>
 
 </footer>
-
+<script src="JS/script.js"></script>
 
 </body>
 
