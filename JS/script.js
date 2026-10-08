@@ -1,3 +1,27 @@
+// Cada objeto reúne os dados de um serviço do portal.
+const servicos = [
+    {
+        nome: "Formatação de computadores",
+        descricao: "Serviço de formatação e instalação do sistema operacional."
+    },
+    {
+        nome: "Manutenção de computadores",
+        descricao: "Análise e manutenção de computadores e notebooks com problemas."
+    },
+    {
+        nome: "Instalação de programas",
+        descricao: "Instalação e configuração de programas para o usuário."
+    }
+];
+
+console.table(servicos);
+console.log(servicos[0].nome);
+console.log(servicos[1].descricao);
+
+servicos.forEach((servico) => {
+    console.log(servico.nome);
+});
+
 const campoServico = document.querySelector("#servico");
 const botaoConsultar = document.querySelector("#btnConsultar");
 const resultado = document.querySelector("#resultado");
