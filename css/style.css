@@ -156,12 +156,13 @@ button {
 }
 
 .container-servicos {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 20px;
 }
 
-.container-servicos {
-    display: flex;
-    gap: 20px;
+.card-servico {
+    margin-top: 0;
 }
 
 footer {

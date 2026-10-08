@@ -53,3 +53,34 @@ botaoConsultar.addEventListener("click", () => {
     }
 
 });
+// O HTML fornece o container; a função cria os cards a partir do array.
+const listaServicos = document.querySelector("#listaServicos");
+
+function renderizarServicos() {
+    if (!listaServicos) {
+        return;
+    }
+
+    // Limpar antes de renderizar evita cards duplicados.
+    listaServicos.innerHTML = "";
+
+    servicos.forEach((servico) => {
+        const card = document.createElement("article");
+        card.classList.add("card-servico");
+
+        const titulo = document.createElement("h3");
+        titulo.textContent = servico.nome;
+
+        const descricao = document.createElement("p");
+        descricao.textContent = servico.descricao;
+
+        const link = document.createElement("a");
+        link.href = "contato.html";
+        link.textContent = "Solicitar serviço";
+
+        card.append(titulo, descricao, link);
+        listaServicos.appendChild(card);
+    });
+}
+
+renderizarServicos();
