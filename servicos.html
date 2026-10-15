@@ -41,6 +41,13 @@
     <section>
         <h2>Catálogo de serviços</h2>
         <p>Veja os serviços oferecidos pela ON Notebooks e Celulares.</p>
+        <label for="filtroCategoria">Filtrar serviços por categoria:</label>
+        <select id="filtroCategoria" aria-controls="listaServicos">
+            <option value="todos">Todos os serviços</option>
+            <option value="software">Software</option>
+            <option value="manutencao">Manutenção</option>
+        </select>
+        <p id="mensagemFiltro" aria-live="polite"></p>
         <div id="listaServicos" class="container-servicos"></div>
         <noscript>Ative o JavaScript para visualizar o catálogo de serviços.</noscript>
     </section>
