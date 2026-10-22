@@ -107,3 +107,32 @@ git push
 ```
 
 Confira o repositório e, se habilitado, o GitHub Pages após a publicação.
+
+
+## Aula 12 - Validação do formulário
+
+O formulário de contato mantém seus campos, labels, `required` e `type="email"`.
+O arquivo `JS/contato.js` é carregado somente em `contato.html`, preservando o
+catálogo e a consulta de serviços. A mensagem `#mensagemForm` usa `aria-live`.
+
+- `submit` trata o envio por botão ou teclado; `click` trata um clique.
+- `preventDefault()` impede o envio e a navegação padrão nesta demonstração.
+- `value` lê o campo e `trim()` remove espaços nas extremidades.
+- `||` significa OU; `return` encerra a função quando falta uma informação.
+- O evento `invalid` mostra orientação no DOM sem desativar a validação HTML.
+- O formulário apenas valida e confirma na página: não envia à loja nem salva
+  nome, e-mail, telefone ou mensagem no armazenamento do navegador.
+
+### Testar a validação
+
+Use dados fictícios (por exemplo, Pessoa Teste e pessoa@example.com).
+Teste campos vazios, e-mail inválido, textos só com espaços e todos os campos
+preenchidos. Confira que a confirmação aparece sem recarregar a página.
+Percorra os campos e o botão com Tab e confira o Console sem erros.
+
+### Uso de IA nesta etapa
+
+Foi solicitado adaptar a atividade ao portal existente. A implementação inclui
+validação dos campos reais, orientação no DOM e confirmação de demonstração.
+O aluno deve executar os testes, compreender o código e registrar seus próprios
+ajustes antes da entrega.
