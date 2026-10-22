@@ -90,6 +90,22 @@
 
     </section>
 
+    <section class="preferencia">
+        <h2>Meu serviço favorito</h2>
+        <p>Salve sua preferência neste navegador para encontrá-la na próxima visita.</p>
+        <label for="servicoFavorito">Escolha um serviço:</label>
+        <select id="servicoFavorito">
+            <option value="">Selecione...</option>
+            <option value="formatacao">Formatação de computadores</option>
+            <option value="manutencao">Manutenção de computadores</option>
+            <option value="programas">Instalação de programas</option>
+            <option value="celulares">Assistência técnica para celulares</option>
+            <option value="consoles">Manutenção de consoles e controles</option>
+        </select>
+        <button id="btnSalvarFavorito" type="button">Salvar favorito</button>
+        <p id="favoritoSalvo" aria-live="polite"></p>
+    </section>
+
 </main>
 
 
@@ -105,6 +121,7 @@
 
 </footer>
 <script src="JS/script.js"></script>
+<script src="JS/favorito.js"></script>
 
 </body>
 

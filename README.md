@@ -136,3 +136,51 @@ Foi solicitado adaptar a atividade ao portal existente. A implementação inclui
 validação dos campos reais, orientação no DOM e confirmação de demonstração.
 O aluno deve executar os testes, compreender o código e registrar seus próprios
 ajustes antes da entrega.
+
+
+## Aula 13 - Serviço favorito com LocalStorage
+
+Em `servicos.html`, a seção Meu serviço favorito oferece os cinco serviços reais
+do catálogo. O arquivo `JS/favorito.js` salva somente o código escolhido na chave
+`servicoFavorito`. Nenhum dado do formulário é armazenado.
+
+- `setItem(chave, valor)` grava ou substitui o favorito no navegador.
+- `getItem(chave)` recupera o valor ao abrir ou atualizar a página.
+- O armazenamento pertence à origem do site e ao perfil do navegador; não é
+  gravado no HTML e não é compartilhado automaticamente com outros aparelhos.
+- `try/catch` permite orientar quando o navegador bloqueia o armazenamento.
+- Valores antigos que não correspondem às opções atuais são ignorados.
+- `textContent` mostra o nome legível do serviço nas mensagens.
+
+### Testar a preferência
+
+1. Clique em Salvar favorito sem escolher: deve aparecer uma orientação.
+2. Escolha um serviço e salve: a confirmação deve mostrar seu nome.
+3. Pressione F5: a seleção e a mensagem devem retornar.
+4. Salve outro serviço e atualize: o novo favorito substitui o anterior.
+5. Em F12 > Application > Local Storage, confira `servicoFavorito`.
+6. Confira que o formulário, o filtro e a consulta continuam funcionando.
+
+Para testar de forma consistente, use um servidor local (por exemplo, Live Server)
+ou o site publicado. O comportamento de LocalStorage em endereços `file://` pode
+variar entre navegadores. Limpar os dados do site remove a preferência.
+
+### Verificação automatizada das Aulas 12 e 13
+
+Testes executados com dados fictícios em navegador: campos vazios, e-mail inválido,
+textos apenas com espaços, confirmação sem navegação, acesso por teclado,
+filtro e catálogo anteriores, consulta e telas de 320, 375 e 1280 pixels.
+Preferência testada ao salvar, recarregar e substituir; também foram verificados
+valor antigo e armazenamento indisponível. Nenhum erro JavaScript foi observado.
+O teste confirmou que somente o código do favorito fica no LocalStorage.
+
+### Evoluções no Git
+
+1. `Adiciona validação JavaScript ao formulário`: validação e mensagens em contato.
+2. `Adiciona preferência de serviço com LocalStorage`: gravação e recuperação do favorito.
+
+### Uso de IA na preferência
+
+A atividade foi adaptada com os cinco serviços do portal e mensagens acessíveis.
+O código foi testado automaticamente; o aluno ainda deve repetir o roteiro,
+explicar `setItem` e `getItem` e registrar eventuais alterações próprias.
