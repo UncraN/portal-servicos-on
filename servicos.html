@@ -14,6 +14,7 @@
 </head>
 
 <body>
+<a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
 
 
 <header>
@@ -25,18 +26,18 @@
 </header>
 
 
-<nav>
+<nav aria-label="Navegação principal">
 
     <a href="index.html">Início</a>
 
-    <a href="servicos.html">Serviços</a>
+    <a href="servicos.html" aria-current="page">Serviços</a>
 
     <a href="contato.html">Contato</a>
 
 </nav>
 
 
-<main>
+<main id="conteudo" tabindex="-1">
 
     <section>
         <h2>Catálogo de serviços</h2>
@@ -106,6 +107,24 @@
         <p id="favoritoSalvo" aria-live="polite"></p>
     </section>
 
+    <section class="consulta-cep" aria-labelledby="tituloCep">
+        <h2 id="tituloCep">Consulta de endereço por CEP</h2>
+        <p id="dicaCep">Digite um CEP brasileiro com 8 números, com ou sem hífen.</p>
+        <form id="formCep">
+            <label for="cep">CEP:</label>
+            <div class="controles-cep">
+                <input id="cep" name="cep" type="text" inputmode="numeric"
+                    maxlength="9" autocomplete="postal-code" placeholder="00000-000"
+                    aria-describedby="dicaCep statusCep">
+                <button id="btnBuscarCep" type="submit">Buscar endereço</button>
+            </div>
+        </form>
+        <p id="statusCep" role="status" aria-live="polite" aria-atomic="true"></p>
+        <div id="resultadoCep" aria-busy="false" aria-live="polite" aria-atomic="true"></div>
+        <p class="fonte-cep">Dados fornecidos pelo <a href="https://viacep.com.br/">ViaCEP</a>.</p>
+        <noscript>Ative o JavaScript para consultar um endereço por CEP.</noscript>
+    </section>
+
 </main>
 
 
@@ -122,6 +141,7 @@
 </footer>
 <script src="JS/script.js"></script>
 <script src="JS/favorito.js"></script>
+<script src="JS/cep.js"></script>
 
 </body>
 

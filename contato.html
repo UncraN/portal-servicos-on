@@ -15,6 +15,7 @@
 
 
 <body>
+<a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
 
 
 <header>
@@ -26,18 +27,18 @@
 </header>
 
 
-<nav>
+<nav aria-label="Navegação principal">
 
     <a href="index.html">Início</a>
 
     <a href="servicos.html">Serviços</a>
 
-    <a href="contato.html">Contato</a>
+    <a href="contato.html" aria-current="page">Contato</a>
 
 </nav>
 
 
-<main>
+<main id="conteudo" tabindex="-1">
 
 
 <section>
@@ -45,7 +46,7 @@
     <h2>Solicite um atendimento</h2>
 
     <p>
-        Preencha os campos abaixo para registrar sua solicitação.
+        Preencha os campos para testar a validação. Esta demonstração não envia nem salva sua solicitação.
     </p>
 
 
@@ -59,6 +60,7 @@
         <input
             type="text"
             id="nome"
+            autocomplete="name"
             name="nome"
             required>
 
@@ -70,6 +72,7 @@
         <input
             type="email"
             id="email"
+            autocomplete="email"
             name="email"
             required>
 
@@ -79,7 +82,8 @@
         </label>
 
         <input
-            type="text"
+            type="tel"
+            autocomplete="tel"
             id="telefone"
             name="telefone"
             required>
