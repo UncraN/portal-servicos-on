@@ -1,186 +1,149 @@
 # ON Notebooks e Celulares
 
-Portal de Serviços desenvolvido para a disciplina de Programação Web.
+## Sobre o projeto
 
-## Entrega 1 - Aulas 1 a 6
+Portal de serviços desenvolvido para a disciplina de Programação Web Front-End.
+Reúne informações sobre assistência técnica para celulares, notebooks, computadores e consoles.
+O visitante pode filtrar o catálogo, consultar orientações e guardar um serviço favorito.
+Também pode testar um formulário de contato e consultar endereços brasileiros por CEP.
 
-O projeto apresenta uma página de serviços da ON Notebooks e Celulares.
+## Tecnologias utilizadas
 
-Foram utilizados:
+- HTML5 semântico e recursos de acessibilidade.
+- CSS3 externo, Flexbox, Grid e media query para telas pequenas.
+- JavaScript: eventos, DOM, arrays de objetos, `forEach`, `filter` e validação.
+- LocalStorage para a preferência de serviço no navegador.
+- Fetch API, `async/await`, JSON e API pública ViaCEP.
+- Git, GitHub e GitHub Pages.
 
-- HTML5 semântico
-- Navegação entre páginas
-- Listas
-- Imagens com texto alternativo
-- Formulário com validação HTML
-- Acessibilidade básica
-- CSS externo
-- Git e GitHub
+## Funcionalidades
 
-## Páginas
+- Catálogo com cinco serviços criado a partir do array `servicos`.
+- Filtro com duas opções de Software, três de Manutenção e opção Todos.
+- Consulta de orientações dos três serviços originais.
+- Formulário com labels, campos obrigatórios, e-mail e validação JavaScript de espaços em branco.
+- Favorito persistido na chave `servicoFavorito`, com tratamento de armazenamento bloqueado.
+- Consulta de CEP com validação, carregamento, endereço, CEP inexistente e tratamento de falhas.
+- Navegação por teclado, link para pular ao conteúdo, foco visível e página atual identificada.
 
-- Página Inicial
-- Serviços
-- Contato
+O formulário é uma demonstração: valida os dados e mostra uma confirmação, sem enviar à loja nem armazenar dados pessoais. Não há servidor de atendimento.
 
-## Autor
+## Organização dos arquivos
 
-Rafael Wammes
-## Aulas 09 e 10 - Catálogo dinâmico
+```text
+portal-servicos-on/
+  index.html          Página inicial
+  servicos.html       Catálogo, filtro, orientação, favorito e consulta de CEP
+  contato.html        Formulário de demonstração
+  css/style.css       Estilos e responsividade
+  img/logo.png        Logotipo da ON
+  JS/script.js        Array, cards, filtro e orientação de serviços
+  JS/favorito.js      Gravação e recuperação da preferência
+  JS/contato.js       Validação do formulário
+  JS/cep.js           Integração com ViaCEP
+  README.md           Documentação e roteiro de revisão
+```
 
-Os três serviços reais do portal estão organizados no array `servicos`, em
-`JS/script.js`. Cada objeto contém `nome` e `descricao`.
+Os caminhos usam `JS/` com letras maiúsculas, como a pasta existente. Isso precisa ser respeitado no GitHub Pages.
 
-- `console.table` permite conferir os objetos; os índices começam em zero.
-- `forEach` executa uma ação para cada serviço.
-- `renderizarServicos()` limpa o container e cria um card para cada objeto.
-- `document.createElement` cria os elementos; `textContent` define seus textos.
-- `append` coloca o título, a descrição e o link dentro do card;
-  `appendChild` insere o card em `#listaServicos`.
-- A consulta com select, botão e if/else da Aula 08 foi preservada.
+## API utilizada
 
-### Como conferir
+O [ViaCEP](https://viacep.com.br/) é um serviço público de consulta de endereços. A aplicação faz uma requisição HTTPS GET e recebe JSON, sem precisar de chave de acesso.
 
-Abra `servicos.html` no navegador. Confira os três cards e o Console (F12).
-Teste a consulta sem seleção e com cada um dos três serviços. No Console,
-execute `renderizarServicos(servicos)` novamente: os cards não devem duplicar.
-Para adicionar um serviço, inclua outro objeto no array e recarregue a página.
+Exemplo: `https://viacep.com.br/ws/01001000/json/`.
 
-### Versionamento
+Em `JS/cep.js`, a função `buscarCep()` segue este fluxo:
 
-1. Organização dos dados: `Organiza serviços em array de objetos`.
-2. Geração dos cards: `Cria catálogo dinâmico de serviços com JavaScript`.
+1. `replace(/\D/g, "")` remove caracteres não numéricos. Se não restarem oito dígitos, mostra orientação, posiciona o foco e encerra com `return`, sem chamar a API.
+2. Mostra “Consultando CEP...”, limpa o resultado e bloqueia consultas repetidas durante a espera.
+3. `fetch` inicia a consulta; `await` espera a resposta sem travar o restante da página.
+4. `resposta.ok` confere o sucesso HTTP. `await resposta.json()` converte o JSON em objeto JavaScript.
+5. `dados.erro` identifica um CEP inexistente. Uma resposta sem cidade/UF utilizáveis também é tratada como falha.
+6. `textContent` mostra logradouro, bairro e cidade/UF no DOM, sem interpretar HTML vindo da API. Campos opcionais vazios recebem textos alternativos.
+7. `catch` mostra orientação em falhas de rede, HTTP ou JSON. `AbortController` encerra a espera após dez segundos.
+8. `finally` libera os controles e encerra o carregamento em todos os casos.
 
-Repositório: https://github.com/UncraN/portal-servicos-on
-Após enviar os commits com `git push`, confira o histórico no GitHub.
-Se o GitHub Pages estiver habilitado, confira a publicação atualizada.
+O evento `submit` com `preventDefault()` permite pesquisar pelo botão ou por Enter sem recarregar a página. O status usa `aria-live`, e o resultado informa `aria-busy` durante a consulta. O CEP não é salvo no LocalStorage; ele é enviado ao ViaCEP para a pesquisa. A disponibilidade e os dados dependem desse serviço externo.
 
+## Como executar e testar
 
-## Aula 11 - Filtro interativo de serviços
+Use um servidor local, como Live Server no VS Code, e abra `index.html`. Outra opção, com Python instalado, é executar na pasta do projeto:
 
-O catálogo agora contém cinco serviços, com `nome`, `descricao` e `categoria`.
-As categorias são `software` (formatação e instalação de programas) e
-`manutencao` (computadores, celulares e consoles/controles). Os dois serviços
-acrescentados já são mencionados na página inicial do portal.
+```sh
+python -m http.server 8000
+```
 
-O campo `#filtroCategoria` permite escolher Todos, Software ou Manutenção.
-Os cards são atualizados sem recarregar a página, mantendo o link de contato,
-o CSS responsivo e a consulta da Aula 8. A mensagem do filtro usa `aria-live`.
-
-### Como explicar o código
-
-- `change` percebe a troca de opção; `value` devolve o valor selecionado.
-- `filter` cria uma nova lista de serviços da categoria, sem alterar o array original.
-- `forEach` percorre essa lista para criar os cards no DOM.
-- `renderizarServicos(lista)` recebe tanto o catálogo completo quanto uma lista filtrada.
-- A limpeza do container evita duplicações. `length` informa a quantidade de itens;
-  quando é zero, a função mostra uma orientação e `return` encerra a execução.
+Depois acesse `http://localhost:8000`. Use o servidor local ou a versão publicada para testar LocalStorage e a API de forma consistente.
 
 ### Roteiro de testes
 
-1. Abra `servicos.html`: devem aparecer cinco cards e a mensagem de todos os serviços.
-2. Selecione Software: devem aparecer dois cards.
-3. Selecione Manutenção: devem aparecer três cards.
-4. Volte para Todos: devem reaparecer cinco cards, sem duplicação.
-5. No Console, execute `renderizarServicos([])` para conferir a mensagem de lista vazia.
-   Execute `renderizarServicos(servicos)` para restaurar o catálogo.
-6. Teste a consulta sem seleção e com cada uma das três opções originais.
-7. Confira o Console, o acesso ao filtro com Tab e o layout em tela estreita.
+1. Abra Início, Serviços e Contato. Confira navegação, CSS, logotipo e Console sem erros JavaScript.
+2. Em Serviços, confira cinco cards. Filtre Software (dois), Manutenção (três) e Todos (cinco). Troque várias vezes e verifique que os cards não duplicam.
+3. Consulte uma orientação sem selecionar e depois com cada um dos três serviços originais.
+4. Salve um favorito e atualize a página. Troque o favorito e atualize novamente. Confira somente `servicoFavorito` no armazenamento local.
+5. Em Contato, use dados fictícios: Pessoa Teste e pessoa@example.com. Teste campos vazios, e-mail inválido, textos apenas com espaços e preenchimento válido. A confirmação aparece sem navegação e sem envio de dados.
+6. Na consulta de CEP, teste campo vazio e `123`: deve aparecer “Digite um CEP com 8 números.” sem requisição à API.
+7. Teste `01001-000` e `01001000`: o resultado deve indicar Praça da Sé, Sé, São Paulo/SP. Durante a espera aparece “Consultando CEP...”.
+8. Teste `99999999`: deve aparecer “CEP não encontrado.” e nenhum endereço antigo deve permanecer.
+9. No DevTools, bloqueie a URL do ViaCEP ou simule rede offline. Consulte um CEP válido: a falha deve aparecer na página e permitir nova tentativa. Restaure a rede. Se a resposta demorar mais de dez segundos, confira a orientação de tempo excedido.
+10. Navegue com Tab, Shift+Tab e Enter. Confira o link “Pular para o conteúdo”, os labels e o foco visível. Teste o CEP também por Enter.
+11. Confira as três páginas em 320, 375 e 1280 pixels, sem rolagem horizontal.
+12. Repita as funções na versão publicada, preferencialmente em outro navegador ou janela anônima.
 
-### Registro do uso de IA
+Para estudar a renderização, execute `renderizarServicos([])` no Console e confira a mensagem de lista vazia. Depois execute `renderizarServicos(servicos)` para restaurar os cinco cards.
 
-- Pedido: ler a atividade da Aula 11 e atualizar o projeto existente.
-- Alterações produzidas: categorias nos objetos, dois serviços já citados no portal,
-  select acessível, evento change, filter, renderização por parâmetro e lista vazia.
-- Revisão do aluno: executar o roteiro acima, revisar o código e registrar aqui
-  quaisquer ajustes próprios antes da entrega. Não declarar testes pessoais ainda não feitos.
+### Verificação automatizada desta etapa — 28/10/2026
 
-### Entrega no GitHub
+Foram aprovados 20 grupos de testes em navegador Microsoft Edge, cobrindo as três páginas, recursos locais, catálogo, filtros, orientações, favorito, validação do formulário, teclado e responsividade em 320/375/1280 pixels. Nenhum erro JavaScript não tratado foi observado.
 
-Após revisar e testar as alterações locais:
+Os cenários de carregamento, CEP inexistente, erro HTTP, rede indisponível, JSON inválido, resposta incompleta, campos opcionais ausentes, texto externo e timeout foram exercitados com respostas controladas. O armazenamento bloqueado e uma preferência antiga também foram testados.
 
-```sh
-git status
-git add JS/script.js servicos.html README.md
-git commit -m "Adiciona filtro de categorias ao catálogo"
-git push
-```
+Além das simulações, consultas reais ao ViaCEP no navegador confirmaram `01001-000` (São Paulo/SP) e `99999999` (CEP inexistente). Os arquivos JavaScript passaram pela verificação de sintaxe. O layout das páginas de Serviços em desktop e celular foi inspecionado visualmente.
 
-Confira o repositório e, se habilitado, o GitHub Pages após a publicação.
+Essas verificações automatizadas não substituem a revisão pessoal do aluno nem uma avaliação completa com leitor de tela.
 
+## Checklist final
 
-## Aula 12 - Validação do formulário
+- [x] HTML semântico, navegação e CSS externo.
+- [x] Identidade visual preservada, imagem com alt correto e layout responsivo.
+- [x] Cards, array de objetos, `forEach`, `filter`, eventos, decisões e DOM.
+- [x] Formulário com labels, tipos apropriados, `required` e validação JavaScript.
+- [x] Favorito mantido após atualizar, com tratamento de armazenamento indisponível.
+- [x] API com carregamento, validação, CEP inexistente e tratamento de falhas.
+- [x] JavaScript separado do HTML e caminhos com capitalização consistente.
+- [x] Navegação por teclado, contraste básico e foco visível.
+- [x] README com funcionalidades, tecnologias, API, testes e Panorama Front-End.
+- [x] Integração versionada no GitHub e portal publicado no GitHub Pages, com testes na versão pública.
+- [ ] Aluno repetir os testes, revisar as explicações e preparar a demonstração oral.
+- [ ] Aluno enviar os links do repositório e do portal à professora.
 
-O formulário de contato mantém seus campos, labels, `required` e `type="email"`.
-O arquivo `JS/contato.js` é carregado somente em `contato.html`, preservando o
-catálogo e a consulta de serviços. A mensagem `#mensagemForm` usa `aria-live`.
+## Publicação
 
-- `submit` trata o envio por botão ou teclado; `click` trata um clique.
-- `preventDefault()` impede o envio e a navegação padrão nesta demonstração.
-- `value` lê o campo e `trim()` remove espaços nas extremidades.
-- `||` significa OU; `return` encerra a função quando falta uma informação.
-- O evento `invalid` mostra orientação no DOM sem desativar a validação HTML.
-- O formulário apenas valida e confirma na página: não envia à loja nem salva
-  nome, e-mail, telefone ou mensagem no armazenamento do navegador.
+Repositório: [UncraN/portal-servicos-on](https://github.com/UncraN/portal-servicos-on).
 
-### Testar a validação
+GitHub Pages: [Portal ON](https://uncran.github.io/portal-servicos-on/).
 
-Use dados fictícios (por exemplo, Pessoa Teste e pessoa@example.com).
-Teste campos vazios, e-mail inválido, textos só com espaços e todos os campos
-preenchidos. Confira que a confirmação aparece sem recarregar a página.
-Percorra os campos e o botão com Tab e confira o Console sem erros.
+Publicação por `master`, pasta raiz (`/`), ativada em 28/10/2026. As três páginas e seus recursos foram verificados na versão pública. Os 20 grupos de testes também foram aprovados no site publicado, em um contexto novo de navegador, incluindo catálogo, formulário, favorito, teclado e telas pequenas. As consultas reais de CEP válido e inexistente foram confirmadas novamente nessa versão.
 
-### Uso de IA nesta etapa
+## Autor
 
-Foi solicitado adaptar a atividade ao portal existente. A implementação inclui
-validação dos campos reais, orientação no DOM e confirmação de demonstração.
-O aluno deve executar os testes, compreender o código e registrar seus próprios
-ajustes antes da entrega.
+Rafael Wammes.
 
+Projeto acadêmico da disciplina de Programação Web Front-End.
 
-## Aula 13 - Serviço favorito com LocalStorage
+## Uso de IA e preparação para a apresentação
 
-Em `servicos.html`, a seção Meu serviço favorito oferece os cinco serviços reais
-do catálogo. O arquivo `JS/favorito.js` salva somente o código escolhido na chave
-`servicoFavorito`. Nenhum dado do formulário é armazenado.
+A IA auxiliou na leitura da atividade, integração com ViaCEP, revisão de acessibilidade, documentação e testes automatizados. O aluno deve revisar o resultado, executar o roteiro e registrar seus próprios ajustes, sem declarar uma revisão pessoal ainda não realizada.
 
-- `setItem(chave, valor)` grava ou substitui o favorito no navegador.
-- `getItem(chave)` recupera o valor ao abrir ou atualizar a página.
-- O armazenamento pertence à origem do site e ao perfil do navegador; não é
-  gravado no HTML e não é compartilhado automaticamente com outros aparelhos.
-- `try/catch` permite orientar quando o navegador bloqueia o armazenamento.
-- Valores antigos que não correspondem às opções atuais são ignorados.
-- `textContent` mostra o nome legível do serviço nas mensagens.
+Para a apresentação, localize o array em `JS/script.js`, explique a diferença entre `forEach` e `filter`, demonstre `preventDefault()` e `trim()` em `JS/contato.js`, mostre o favorito após atualizar e explique a sequência `fetch` → `await` → `ok` → `json()` → dados → DOM → tratamento de erro em `JS/cep.js`.
 
-### Testar a preferência
+## Panorama Front-End
 
-1. Clique em Salvar favorito sem escolher: deve aparecer uma orientação.
-2. Escolha um serviço e salve: a confirmação deve mostrar seu nome.
-3. Pressione F5: a seleção e a mensagem devem retornar.
-4. Salve outro serviço e atualize: o novo favorito substitui o anterior.
-5. Em F12 > Application > Local Storage, confira `servicoFavorito`.
-6. Confira que o formulário, o filtro e a consulta continuam funcionando.
+1. **Componentização:** é dividir a interface em partes que podem ser reutilizadas, como um card de serviço. Neste portal, a função de renderização cria cards com a mesma estrutura; isso facilita manter a apresentação consistente e alterar essa estrutura em um só lugar.
+2. **Multipágina e SPA:** neste portal multipágina, abrir Serviços ou Contato carrega outro documento HTML. Em uma SPA, a aplicação costuma atualizar o conteúdo e controlar a navegação com JavaScript, sem carregar um documento inteiro a cada troca de tela.
+3. **Bootstrap:** é um conjunto de estilos e componentes prontos, com um sistema de grade responsiva. Pode acelerar uma interface com menus, formulários e colunas quando não é necessário criar tudo do zero. Este projeto usa CSS próprio.
+4. **React, Vue e Angular:** React é uma biblioteca para construir interfaces com componentes; Vue é um framework progressivo com componentes reativos; Angular é um framework com uma estrutura mais completa, normalmente usando TypeScript, para organizar aplicações. Nenhum deles é necessário para o funcionamento deste portal.
+5. **Base da Web:** frameworks ajudam a organizar a aplicação, mas a interface ainda depende de HTML, CSS e JavaScript. Conhecer essa base permite compreender o resultado, corrigir erros, adaptar o layout e cuidar da acessibilidade.
+6. **IA no desenvolvimento:** pode ajudar a explicar erros, sugerir soluções e elaborar testes. É preciso ler, testar e adaptar o que ela produz para conseguir explicar o código e perceber sugestões que não atendem ao projeto.
 
-Para testar de forma consistente, use um servidor local (por exemplo, Live Server)
-ou o site publicado. O comportamento de LocalStorage em endereços `file://` pode
-variar entre navegadores. Limpar os dados do site remove a preferência.
-
-### Verificação automatizada das Aulas 12 e 13
-
-Testes executados com dados fictícios em navegador: campos vazios, e-mail inválido,
-textos apenas com espaços, confirmação sem navegação, acesso por teclado,
-filtro e catálogo anteriores, consulta e telas de 320, 375 e 1280 pixels.
-Preferência testada ao salvar, recarregar e substituir; também foram verificados
-valor antigo e armazenamento indisponível. Nenhum erro JavaScript foi observado.
-O teste confirmou que somente o código do favorito fica no LocalStorage.
-
-### Evoluções no Git
-
-1. `Adiciona validação JavaScript ao formulário`: validação e mensagens em contato.
-2. `Adiciona preferência de serviço com LocalStorage`: gravação e recuperação do favorito.
-
-### Uso de IA na preferência
-
-A atividade foi adaptada com os cinco serviços do portal e mensagens acessíveis.
-O código foi testado automaticamente; o aluno ainda deve repetir o roteiro,
-explicar `setItem` e `getItem` e registrar eventuais alterações próprias.
+Estas explicações foram elaboradas com auxílio de IA e devem ser revistas pelo aluno para a apresentação com suas próprias palavras.
